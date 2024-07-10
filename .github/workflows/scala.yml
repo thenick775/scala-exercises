@@ -1,0 +1,26 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK and Scala
+        uses: olafurpg/setup-scala@v14
+        with:
+          scala-version: 3.4.2
+          java-version: adopt@1.11
+
+      - name: Build and Test
+        run: sbt clean compile test
