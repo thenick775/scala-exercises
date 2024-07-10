@@ -1,5 +1,5 @@
 import Cruise.Prices.{Rate, CabinPrice, getBestGroupPrices}
-import Cruise.Promotions.{Promotion}
+import Cruise.Promotions.{Promotion, allCombinablePromotions, combinablePromotions}
 
 @main def hello(): Unit =
   println("Problem 1:\n")
@@ -26,3 +26,24 @@ import Cruise.Promotions.{Promotion}
   println("Sequence of BestGroupPrice:\n")
   println(getBestGroupPrices(rates, prices).mkString("\n").concat("\n"))
 
+  // -----------------------------------------------------------------
+
+  println("Problem 2:")
+
+  // data setup
+  val promotions = Seq(
+    Promotion("P1", Seq("P3")), // P1 is not combinable with P3
+    Promotion("P2", Seq("P4", "P5")), // P2 is not combinable with P4 and P5
+    Promotion("P3", Seq("P1")), // P3 is not combinable with P1
+    Promotion("P4", Seq("P2")), // P4 is not combinable with P2
+    Promotion("P5", Seq("P2")) // P5 is not combinable with P2
+  )
+
+  println("All PromotionCombos combinations:\n")
+  println(allCombinablePromotions(promotions).mkString("\n").concat("\n"))
+
+  println("PromotionCombos for promotionCode=\"P1\":\n")
+  println(combinablePromotions("P1", promotions).mkString("\n").concat("\n"))
+
+  println("PromotionCombos for promotionCode=\"P3\":\n")
+  println(combinablePromotions("P3", promotions).mkString("\n").concat("\n"))

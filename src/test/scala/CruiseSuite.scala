@@ -1,7 +1,8 @@
 import munit._
-import Cruise.Prices.*
 
-class CruisePricingSuite extends FunSuite {
+class CruisePricingSuite extends munit.FunSuite {
+  import Cruise.Prices._
+
   // getBestGroupPrices
   test("should return correct results for valid input") {
     val rates = Seq(
@@ -29,7 +30,7 @@ class CruisePricingSuite extends FunSuite {
       BestGroupPrice("CB", "S1", 245.00, "Senior")
     )
 
-    val result = Cruise.Prices.getBestGroupPrices(rates, prices)
+    val result = getBestGroupPrices(rates, prices)
 
     assertEquals(result, expected)
   }
@@ -52,5 +53,37 @@ class CruisePricingSuite extends FunSuite {
     // partially empty with prices
     val resultPartialPrices = getBestGroupPrices(Seq.empty, prices)
     assertEquals(resultPartialPrices, Seq.empty)
+  }
+}
+
+class CruisePromotionSuite extends munit.FunSuite {
+  import Cruise.Promotions._
+
+   // allCombinablePromotions
+   test("should return correct results for valid input") {
+    val promotions = Seq(
+      Promotion("P1", Seq("P3")),
+      Promotion("P2", Seq("P4", "P5")),
+      Promotion("P3", Seq("P1")),
+      Promotion("P4", Seq("P2")),
+      Promotion("P5", Seq("P2"))
+    )
+
+    val expectedCombos = Seq(
+      PromotionCombo(Seq("P1", "P2")),
+      PromotionCombo(Seq("P1", "P4", "P5")),
+      PromotionCombo(Seq("P2", "P3")),
+      PromotionCombo(Seq("P3", "P4", "P5"))
+    )
+
+    val result = allCombinablePromotions(promotions)
+
+    assertEquals(result, expectedCombos)
+  }
+
+  test("should return empty list for empty promotions list") {
+    val result = allCombinablePromotions(Seq.empty)
+
+    assertEquals(result, Seq.empty)
   }
 }
